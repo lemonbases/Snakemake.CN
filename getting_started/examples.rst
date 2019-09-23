@@ -10,9 +10,9 @@ Cufflinks
 =========
 
 
-`Cufflinks <http://cole-trapnell-lab.github.io/cufflinks/>`_是用于RNA-seq数据转录本组装，计算丰度，差异表达分析的工具。本示例说明如何使用Snakemake创建典型的Cufflinks工作流。 假定将给定四个样本101-104的比对RNA-Seq数据bam文件。
+ `Cufflinks <http://cole-trapnell-lab.github.io/cufflinks/>`_ 是用于RNA-seq数据转录本组装，计算丰度，差异表达分析的工具。本示例说明如何使用Snakemake创建典型的Cufflinks工作流。 假定将给定四个样本101-104的比对RNA-Seq数据bam文件。
 
-* 对于每个样本，转录本使用 ``cufflinks``进行拼接组装(规则 ``assembly``)
+* 对于每个样本，转录本使用 ``cufflinks`` 进行拼接组装(规则 ``assembly`` )
 * ``cuffmerge`` merge转录本gtf(规则 ``merge_assemblies``)
 * 和hg19注释文件进行比较(规则 ``compare_assemblies``)
 * 最后，根据找到的转录本计算差异表达(规则 ``diffexp``)
@@ -187,7 +187,7 @@ Snakefile可以很容易地写成
         shell:
             "rm -f   *~  core  {IDIR}/*~"
 
-可以看出，shell调用变得更具可读性，例如 ``"{CC} -c -o {output} {input} {CFLAGS}"``而不是 ``$(CC) -c -o $@ $< $(CFLAGS)``。 此外，当不再需要 ``.o``文件时，Snakemake会自动删除它们，因为它们被标记为临时文件。
+可以看出，shell调用变得更具可读性，例如 ``"{CC} -c -o {output} {input} {CFLAGS}"`` 而不是 ``$(CC) -c -o $@ $< $(CFLAGS)`` 。 此外，当不再需要 ``.o``文件时，Snakemake会自动删除它们，因为它们被标记为临时文件。
 
 .. image:: img/c-dag.png
     :alt: C Workflow DAG
@@ -233,7 +233,7 @@ Snakemake也可以自动生成科学论文。 除了编译LaTeX代码和调用Bi
         shell:
             "rm -f  *.log *.aux *.bbl *.blg *.synctex.gz"
 
-注意如何区分带有和不带有相同名称的 ``.bib`` 的 ``.tex``文件。假设 ``paper.tex``和 ``paper.bib``都存在，则产生了歧义：原则上，这两个规则都是适用的。这将导致 ``AmbiguousRuleException`，但由于我们在文件中指定了明确的规则顺序，因此在这种情况下，首选 ``tex2pdf_with_bib``规则。如果 ``paper.bib``文件不存在，则该规则不再适用，唯一的选择是执行规则 ``tex2pdf_without_bib``。
+注意如何区分带有和不带有相同名称的 ``.bib`` 的 ``.tex`` 文件。假设 ``paper.tex`` 和 ``paper.bib`` 都存在，则产生了歧义：原则上，这两个规则都是适用的。这将导致 ``AmbiguousRuleException`` ，但由于我们在文件中指定了明确的规则顺序，因此在这种情况下，首选 ``tex2pdf_with_bib`` 规则。如果 ``paper.bib`` 文件不存在，则该规则不再适用，唯一的选择是执行规则 ``tex2pdf_without_bib`` 。
 
 假设上述文件另存为 ``tex.rules``，然后从包含以下常见规则的特定Snakefile构建实际文档：
 
