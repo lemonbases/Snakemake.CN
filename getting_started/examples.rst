@@ -1,24 +1,21 @@
 .. getting_started-examples:
 
 ========
-Examples
+示例
 ========
 
-Most of the examples below assume that Snakemake is executed in a project-specific root directory.
-The paths in the Snakefiles below are relative to this directory.
-We follow the convention to use different subdirectories for different intermediate results, e.g., ``mapped/`` for mapped sequence reads in ``.bam`` files, etc.
-
+下面的大多数示例都假定Snakemake在特定项目的根目录中执行。下面的Snakefiles中的路径是相对于该目录的。我们遵循惯例为不同的中间结果使用不同的子目录，例如， ``mapped/``文件夹存放比对序列reads的 ``.bam``文件。
 
 Cufflinks
 =========
 
-`Cufflinks <http://cole-trapnell-lab.github.io/cufflinks/>`_ is a tool to assemble transcripts, calculate abundance and conduct a differential expression analysis on RNA-Seq data. This example shows how to create a typical Cufflinks workflow with Snakemake.
-It assumes that mapped RNA-Seq data for four samples 101-104 is given as bam files.
 
-* For each sample, transcripts are assembled with ``cufflinks`` (rule ``assembly``).
-* Assemblies are merged into one gtf with ``cuffmerge`` (rule ``merge_assemblies``).
-* A comparison to the hg19 gtf-track is conducted (rule ``compare_assemblies``).
-* Finally, differential expressions are calculated on the found transcripts (rule ``diffexp``).
+`Cufflinks <http://cole-trapnell-lab.github.io/cufflinks/>`_是用于RNA-seq数据转录本组装，计算丰度，差异表达分析的工具。本示例说明如何使用Snakemake创建典型的Cufflinks工作流。 假定将给定四个样本101-104的比对RNA-Seq数据bam文件。
+
+* 对于每个样本，转录本使用 ``cufflinks``进行拼接组装(规则 ``assembly``)
+* ``cuffmerge`` merge转录本gtf(规则 ``merge_assemblies``)
+* 和hg19注释文件进行比较(规则 ``compare_assemblies``)
+* 最后，根据找到的转录本计算差异表达(规则 ``diffexp``)
 
 .. code-block:: python
 
@@ -99,19 +96,18 @@ It assumes that mapped RNA-Seq data for four samples 101-104 is given as bam fil
         shell:
             'cuffdiff --num-threads {threads} {gtf} {params.class1} {params.class2}'
 
-The execution plan of Snakemake for this workflow can be visualized with the following DAG.
+可以使用以下DAG可视化Snakemake工作流程的执行顺序。
 
 .. image:: img/cufflinks-dag.png
     :alt: Cufflinks Workflow DAG
 
 
-Building a C Program
+编译C程序
 ====================
 
-GNU Make is primarily used to build C/C++ code.
-Snakemake can do the same, while providing a superior readability due to less obscure variables inside the rules.
+GNU Make主要用于编译C/C++代码。Snakemake也可以实现，同时由于规则内的变量较少而可读性较强。
 
-The following example Makefile was adapted from http://www.cs.colby.edu/maxwell/courses/tutorials/maketutor/.
+以下示例Makefile改编自 http://www.cs.colby.edu/maxwell/courses/tutorials/maketutor/.
 
 .. code-block:: makefile
 
@@ -144,7 +140,7 @@ The following example Makefile was adapted from http://www.cs.colby.edu/maxwell/
     clean:
             rm -f $(ODIR)/*.o *~ core $(IDIR)/*~
 
-A Snakefile can be easily written as
+Snakefile可以很容易地写成
 
 .. code-block:: python
 
@@ -191,19 +187,18 @@ A Snakefile can be easily written as
         shell:
             "rm -f   *~  core  {IDIR}/*~"
 
-As can be seen, the shell calls become more readable, e.g. ``"{CC} -c -o {output} {input} {CFLAGS}"`` instead of ``$(CC) -c -o $@ $< $(CFLAGS)``. Further, Snakemake automatically deletes ``.o``-files when they are not needed anymore since they are marked as ``temp``.
+可以看出，shell调用变得更具可读性，例如 ``"{CC} -c -o {output} {input} {CFLAGS}"``而不是 ``$(CC) -c -o $@ $< $(CFLAGS)``。 此外，当不再需要 ``.o``文件时，Snakemake会自动删除它们，因为它们被标记为临时文件。
 
 .. image:: img/c-dag.png
     :alt: C Workflow DAG
 
 
-Building a Paper with LaTeX
+使用LaTeX构建文档
 ===========================
 
-Building a scientific paper can be automated by Snakemake as well.
-Apart from compiling LaTeX code and invoking BibTeX, we provide a special rule to zip the needed files for online submission.
+Snakemake也可以自动生成科学论文。 除了编译LaTeX代码和调用BibTeX，我们还提供了一条特殊规则来压缩所需文件以进行在线提交。
 
-We first provide a Snakefile ``tex.rules`` that contains rules that can be shared for any latex build task:
+我们首先提供一个Snakefile ``tex.rules``，其中包含可以为任何latex构建任务时共享的规则：
 
 .. code-block:: python
 
@@ -238,12 +233,9 @@ We first provide a Snakefile ``tex.rules`` that contains rules that can be share
         shell:
             "rm -f  *.log *.aux *.bbl *.blg *.synctex.gz"
 
-Note how we distinguish between a ``.tex`` file with and without a corresponding ``.bib`` with the same name.
-Assuming that both ``paper.tex`` and ``paper.bib`` exist, an ambiguity arises: Both rules are, in principle, applicable.
-This would lead to an ``AmbiguousRuleException``, but since we have specified an explicit rule order in the file, it is clear that in this case the rule ``tex2pdf_with_bib`` is to be preferred.
-If the ``paper.bib`` file does not exist, that rule is not even applicable, and the only option is to execute rule ``tex2pdf_without_bib``.
+注意如何区分带有和不带有相同名称的 ``.bib`` 的 ``.tex``文件。假设 ``paper.tex``和 ``paper.bib``都存在，则产生了歧义：原则上，这两个规则都是适用的。这将导致 ``AmbiguousRuleException`，但由于我们在文件中指定了明确的规则顺序，因此在这种情况下，首选 ``tex2pdf_with_bib``规则。如果 ``paper.bib``文件不存在，则该规则不再适用，唯一的选择是执行规则 ``tex2pdf_without_bib``。
 
-Assuming that the above file is saved as ``tex.rules``, the actual documents are then built from a specific Snakefile that includes these common rules:
+假设上述文件另存为 ``tex.rules``，然后从包含以下常见规则的特定Snakefile构建实际文档：
 
 .. code-block:: python
 
@@ -271,8 +263,8 @@ Assuming that the above file is saved as ``tex.rules``, the actual documents are
         shell:
             "rm -f  {PDFS}"
 
-Hence the user can perform 4 different tasks.
-Build all PDFs:
+用户可以执行4个不同的任务。
+构建全部PDF:
 
 .. code-block:: console
 
@@ -284,19 +276,19 @@ Create a zip-file for online submissions:
 
     $ snakemake zipit
 
-Clean up all PDFs:
+清理所有PDF:
 
 .. code-block:: console
 
     $ snakemake pdfclean
 
-Clean up latex temporary files:
+清理Latex临时文件:
 
 .. code-block:: console
 
     $ snakemake texclean
 
-The following DAG of jobs would be executed upon a full run:
+以下DAG任务将在完整运行时执行:
 
 .. image:: img/latex-dag.png
     :alt: LaTeX Workflow DAG
