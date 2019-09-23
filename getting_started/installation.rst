@@ -31,8 +31,7 @@ Conda安装
 
     $ conda install -c bioconda -c conda-forge snakemake-minimal
 
-Note that Snakemake is available via Bioconda for historical, reproducibility, and continuity reasons.
-However, it is easy to combine Snakemake installation with other channels, e.g., by prefixing the package name with ``::bioconda``, i.e.,
+出于历史，可重复性和连续性的原因，可以通过Bioconda获得Snakemake。但是，可以使用其它channel安装Snakemake，比如在包名字前加上前缀 ``::bioconda``, 比如，
 
 .. code-block:: console
 
@@ -41,25 +40,23 @@ However, it is easy to combine Snakemake installation with other channels, e.g.,
 全局安装
 ===================
 
-With a working Python ``>=3.5`` setup, installation of Snakemake can be performed by issuing
+使用Python ``>=3.5``，可以通过以下命令来安装Snakemake
 
 .. code-block:: console
 
     $ easy_install3 snakemake
 
-or
+或
 
 .. code-block:: console
 
     $ pip3 install snakemake
 
-in your terminal.
-
 
 虚拟环境安装
 ========================
 
-To create an installation in a virtual environment, use the following commands:
+在虚拟环境中创建安装，使用以下命令：
 
 .. code-block:: console
 
@@ -71,9 +68,7 @@ To create an installation in a virtual environment, use the following commands:
 源码安装
 ======================
 
-We recommend installing Snakemake into a virtualenv instead of globally.
-Use the following commands to create a virtualenv and install Snakemake.
-Note that this will install the development version and as you are installing from the source code, we trust that you know what you are doing and how to checkout individual versions/tags.
+建议将Snakemake安装到virtualenv中，而不是全局安装。使用以下命令创建一个虚拟环境并安装Snakemake。请注意，这将安装开发版本，并且在您从源代码进行安装时，相信您知道自己做法以及如何查看各个版本/标签。
 
 .. code-block:: console
 
@@ -83,4 +78,4 @@ Note that this will install the development version and as you are installing fr
     $ source .venv/bin/activate
     $ python setup.py install
 
-You can also use ``python setup.py develop`` to create a "development installation" in which no files are copied but a link is created and changes in the source code are immediately visible in your ``snakemake`` commands.
+还可以使用 ``python setup.py develop``来安装开发版，在该安装中，并不复制文件，而是创建了链接，并且源代码中的更改在snakemake命令中立即可见。
