@@ -13,7 +13,6 @@ google
 Bio
 boto3
 pysftp
-XRootD
 dropbox
 aioeasywebdav
 snakemake
