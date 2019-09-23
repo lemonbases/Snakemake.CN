@@ -6,4 +6,15 @@ docutils==0.12
 recommonmark
 configargparse
 appdirs
+psutil
+flask
+ftputil
+google
+Bio
+boto3
+pysftp
+XRootD
+dropbox
+irods
+aioeasywebdav
 snakemake
