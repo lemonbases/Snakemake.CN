@@ -78,4 +78,4 @@ Conda安装
     $ source .venv/bin/activate
     $ python setup.py install
 
-还可以使用 ``python setup.py develop``来安装开发版，在该安装中，并不复制文件，而是创建了链接，并且源代码中的更改在snakemake命令中立即可见。
+还可以使用 `python setup.py develop`来安装开发版，在该安装中，并不复制文件，而是创建了链接，并且源代码中的更改在snakemake命令中立即可见。
